@@ -1,95 +1,306 @@
 <!doctype html>
+<!--
+  Polityka prywatnosci Sova Nanny.
+
+  TRZY ZASADY TEJ STRONY, w tej kolejnosci:
+
+  1. ZERO ZASOBOW ZEWNETRZNYCH. Zadnych czcionek Google, zadnych CDN, zadnych skryptow. Strona
+     o prywatnosci, ktora przy otwarciu wysyla adres IP czytelnika do Google po czcionke, jest
+     wewnetrznie sprzeczna. Znak jest wektorem w tresci, ikona karty to data URI, czcionki sa
+     systemowe. Dzieki temu strona dziala tez pod dowolnym prefiksem sciezki.
+  2. JEDEN PLIK. Idzie na GitHub Pages, czasem pod adres z katalogiem projektu w srodku, wiec nic
+     nie moze zalezec od sciezki bezwzglednej. Brak plikow obok = brak 404.
+  3. BARWY I ZNAK Z APLIKACJI. Paleta z ui/theme/Color.kt, geometria sowy z MarkPaths.kt
+     (glowa i oczy OBRYSEM 4,2, zrenice wypelnione - dokladnie jak rysuje to Brand.kt).
+     Rodzic, ktory trafi tu z Play, ma zobaczyc te sama aplikacje.
+
+  Data „Effective date" zmienia sie TYLKO wtedy, gdy zmienia sie sposob przetwarzania danych.
+  Przeredagowanie wygladu nia nie rusza.
+-->
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sova Nanny – Privacy Policy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sova Nanny — Privacy Policy</title>
 <meta name="description" content="Privacy policy for Sova Nanny, a Wi-Fi baby monitor for two Android phones. No account, no server, nothing leaves your home network.">
+<meta name="theme-color" content="#141218" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f5fb" media="(prefers-color-scheme: light)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%238B7CFF' stroke-width='7' stroke-linejoin='round'%3E%3Cpath d='M16 12 L21.42 37.5 A33 33 0 1 0 78.58 37.5 L84 12 L50 22 Z'/%3E%3Ccircle cx='35' cy='51' r='12.5'/%3E%3Ccircle cx='65' cy='51' r='12.5'/%3E%3C/g%3E%3Cg fill='%238B7CFF'%3E%3Ccircle cx='35' cy='51' r='5'/%3E%3Ccircle cx='65' cy='51' r='5'/%3E%3C/g%3E%3C/svg%3E">
 <style>
-  :root { color-scheme: light dark; --fg: #1d1a26; --muted: #5c5870; --bg: #faf9fc; --line: #e2dfea; --accent: #6f5de8; }
-  @media (prefers-color-scheme: dark) { :root { --fg: #ece9f4; --muted: #a9a4bd; --bg: #141220; --line: #2b2838; --accent: #a99cff; } }
-  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
-  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .25rem; }
-  h2 { font-size: 1.25rem; margin: 2.2rem 0 .6rem; }
-  p, li { margin: .5rem 0; }
-  .meta { color: var(--muted); margin-bottom: 2rem; }
-  table { border-collapse: collapse; width: 100%; margin: .8rem 0; font-size: .95rem; }
-  th, td { text-align: left; vertical-align: top; padding: .5rem .6rem; border-bottom: 1px solid var(--line); }
-  th { font-weight: 600; }
-  a { color: var(--accent); }
-  .box { border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
-  footer { margin-top: 3rem; color: var(--muted); font-size: .9rem; }
+  /* Paleta 1:1 z aplikacji (ui/theme/Color.kt). Ciemny motyw jest domyslny, bo taka jest apka;
+     jasny istnieje, bo te strone czyta sie w dzien, na biurku, a nie o trzeciej w nocy. */
+  :root {
+    color-scheme: dark light;
+    --bg: #141218;
+    --bg-2: #1a1724;
+    --surface: #1C1926;
+    --surface-2: #252132;
+    --line: #322C45;
+    --fg: #F2F6FA;
+    --muted: #B5AECA;
+    --faint: #8E86A8;
+    --violet: #8B7CFF;
+    --violet-dim: #2A2350;
+    --teal: #2DD4BF;
+    --teal-dim: #134E45;
+    --shadow: 0 1px 0 rgba(255,255,255,.03), 0 18px 40px -24px rgba(0,0,0,.9);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f7f5fb;
+      --bg-2: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f1eef8;
+      --line: #e3dff0;
+      --fg: #1b1826;
+      --muted: #585370;
+      --faint: #6f6a86;
+      --violet: #5a49d6;
+      --violet-dim: #ece9fb;
+      --teal: #0e8d7c;
+      --teal-dim: #e2f5f1;
+      --shadow: 0 1px 2px rgba(27,24,38,.05), 0 14px 32px -22px rgba(27,24,38,.35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Poswiata w tle: fiolet u gory, teal nizej. Dwa kolory marki, nic wiecej. */
+  .glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(60rem 32rem at 50% -14rem, color-mix(in srgb, var(--violet) 26%, transparent), transparent 70%),
+      radial-gradient(44rem 26rem at 88% 24rem, color-mix(in srgb, var(--teal) 13%, transparent), transparent 70%);
+  }
+  @supports not (background: color-mix(in srgb, red, blue)) {
+    .glow { background: radial-gradient(60rem 32rem at 50% -14rem, rgba(139,124,255,.22), transparent 70%); }
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 46rem; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
+  /* ── naglowek ───────────────────────────────────────────────────────────── */
+  header { padding: 3.5rem 0 2.25rem; text-align: center; }
+  .mark { width: 76px; height: 76px; display: block; margin: 0 auto 1.1rem; }
+  .mark .ring { stroke: var(--teal); opacity: .55; }
+  .mark .ring2 { stroke: var(--violet); opacity: .35; }
+  .mark .owl { fill: none; stroke: var(--violet); stroke-width: 4.2; stroke-linejoin: round; stroke-linecap: round; }
+  .mark .pupil { fill: var(--violet); }
+  .wordmark {
+    margin: 0; font-size: clamp(1.9rem, 7vw, 2.6rem); line-height: 1.05;
+    letter-spacing: .14em; font-weight: 700; text-transform: uppercase;
+  }
+  .eyebrow {
+    margin: .7rem 0 0; font-size: .72rem; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700;
+  }
+  .doc-title { margin: 2.1rem 0 .4rem; font-size: clamp(1.45rem, 5vw, 1.9rem); line-height: 1.2; }
+  .stamp { margin: 0; color: var(--faint); font-size: .92rem; }
+  .stamp code { font-size: .88em; color: var(--muted); }
+
+  /* ── trzy filary ────────────────────────────────────────────────────────── */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin: 2rem 0 .5rem; }
+  .pillar {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 1rem .9rem; text-align: center; box-shadow: var(--shadow);
+  }
+  .pillar svg { width: 26px; height: 26px; stroke: var(--teal); fill: none; stroke-width: 1.7;
+                stroke-linecap: round; stroke-linejoin: round; margin-bottom: .45rem; }
+  .pillar b { display: block; font-size: .95rem; }
+  .pillar span { display: block; color: var(--faint); font-size: .82rem; margin-top: .15rem; }
+  /* Na telefonie trzy kolumny sie nie mieszcza, ale trzy WYSOKIE karty zjadaly caly ekran
+     i spychaly tresc polityki pod fold. Ikona po lewej, tekst po prawej: ta sama informacja
+     w jednej trzeciej wysokosci. */
+  @media (max-width: 34rem) {
+    .pillars { grid-template-columns: 1fr; gap: .5rem; }
+    .pillar {
+      display: grid; grid-template-columns: auto 1fr; align-items: center;
+      gap: 0 .85rem; text-align: left; padding: .8rem 1rem;
+    }
+    .pillar svg { margin: 0; grid-row: span 2; }
+    .pillar b { align-self: end; }
+    .pillar span { align-self: start; }
+  }
+
+  /* ── tresc ──────────────────────────────────────────────────────────────── */
+  main { margin-top: 1.6rem; }
+  h2 {
+    font-size: 1.16rem; margin: 2.6rem 0 .7rem; padding-left: .85rem;
+    border-left: 3px solid var(--violet); line-height: 1.3;
+  }
+  p, li { margin: .55rem 0; color: var(--muted); }
+  p strong, li strong { color: var(--fg); font-weight: 650; }
+  ul { padding-left: 1.15rem; }
+  li { margin: .7rem 0; }
+  a { color: var(--violet); text-underline-offset: .18em; }
+  a:hover { color: var(--teal); }
+
+  .lead {
+    background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--teal);
+    border-radius: 16px; padding: 1.15rem 1.3rem; margin: 1.8rem 0 0; box-shadow: var(--shadow);
+  }
+  .lead h2 { border: 0; padding: 0; margin: 0 0 .4rem; font-size: 1rem;
+             letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+  .lead p { margin: 0; color: var(--fg); }
+
+  /* Tabela uprawnien: na szerokim ekranie tabela, na telefonie karty. Poziomy pasek przewijania
+     w dokumencie prawnym to sposob na to, zeby polowy warunkow nikt nie przeczytal. */
+  .perms { margin: 1rem 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+           background: var(--surface); box-shadow: var(--shadow); }
+  .perm { display: grid; grid-template-columns: 15rem 1fr; gap: 0 1.1rem;
+          padding: .85rem 1.1rem; border-top: 1px solid var(--line); }
+  .perm:first-child { border-top: 0; }
+  .perm dt { font-weight: 650; color: var(--fg); }
+  .perm dd { margin: 0; color: var(--muted); }
+  @media (max-width: 40rem) {
+    .perm { grid-template-columns: 1fr; gap: .2rem; }
+  }
+
+  footer {
+    margin-top: 3.2rem; padding-top: 1.6rem; border-top: 1px solid var(--line);
+    color: var(--faint); font-size: .9rem;
+  }
+  .note { background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px;
+          padding: .9rem 1.1rem; margin: 1.2rem 0 1.6rem; color: var(--muted); font-size: .92rem; }
+  .sig { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: baseline; }
+
+  /* Wydruk: reviewer w Play czasem drukuje albo robi PDF. */
+  @media print {
+    .glow, .pillars { display: none; }
+    body { background: #fff; color: #000; font-size: 11pt; }
+    .lead, .perms, .note { border-color: #bbb; box-shadow: none; background: #fff; }
+    p, li, .perm dd { color: #222; }
+    h2 { border-left-color: #666; }
+    a { color: #000; text-decoration: underline; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1>Sova Nanny – Privacy Policy</h1>
-  <p class="meta">Effective date: 3 October 2026 · Applies to the Android app “Sova Nanny” (package <code>com.iwelautomatyka.sova</code>)</p>
+<div class="glow" aria-hidden="true"></div>
+<div class="wrap">
 
-  <div class="box">
-    <p><strong>The short version.</strong> Sova Nanny turns two Android phones into a baby monitor over your own Wi-Fi. There is no account, no sign-in, no server of ours and no cloud. Sound and video travel directly from the phone in the nursery to the phone in your pocket and never leave your home network. We do not collect, store or sell any personal data, and the app contains no advertising or analytics.</p>
+  <header>
+    <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Sova Nanny">
+      <!-- pierscien jak na ekranie stanu w aplikacji, tyle ze uproszczony do kreskowanego okregu -->
+      <circle class="ring" cx="50" cy="50" r="47" fill="none" stroke-width="2.4"
+              stroke-dasharray="1.6 7.2" stroke-linecap="round"/>
+      <circle class="ring2" cx="50" cy="50" r="42" fill="none" stroke-width="1.6"
+              stroke-dasharray="1.2 9" stroke-linecap="round"/>
+      <!-- geometria 1:1 z MarkPaths.kt: glowa i oczy obrysem, zrenice wypelnione -->
+      <g transform="translate(50 50) scale(.80) translate(-50 -50)">
+        <path class="owl" d="M16,12 L21.42,37.5 A33,33 0 1 0 78.58,37.5 L84,12 L50,22 Z"/>
+        <circle class="owl" cx="35" cy="51" r="12.5"/>
+        <circle class="owl" cx="65" cy="51" r="12.5"/>
+        <circle class="pupil" cx="35" cy="51" r="4"/>
+        <circle class="pupil" cx="65" cy="51" r="4"/>
+      </g>
+    </svg>
+    <h1 class="wordmark">Sova Nanny</h1>
+    <p class="eyebrow">Baby monitor</p>
+
+    <h2 class="doc-title" style="border:0;padding:0;">Privacy Policy</h2>
+    <p class="stamp">Effective 3 October 2026 · Android app <code>com.iwelautomatyka.sova</code></p>
+  </header>
+
+  <div class="pillars">
+    <div class="pillar">
+      <!-- sylwetka czlowieka przekreslona; pierwsza wersja byla luk, ktory czytalo sie jako sluchawki -->
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.2a7 7 0 0 1 14 0"/><path d="M3.4 3.4l17.2 17.2"/></svg>
+      <b>No account</b><span>Nothing to sign in to</span>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 19.4a4.6 4.6 0 0 1-.6-9.16 6.2 6.2 0 0 1 11.9-1.1A4.2 4.2 0 0 1 17.8 19.4z"/><path d="M4 4l16 16"/></svg>
+      <b>No cloud</b><span>No server of ours</span>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0v-5a3 3 0 0 1 3-3z"/><path d="M5.4 11.2a6.6 6.6 0 0 0 13.2 0M12 17.8V21"/><path d="M4 4l16 16"/></svg>
+      <b>Nothing recorded</b><span>Sound is never saved</span>
+    </div>
   </div>
 
-  <h2>Who we are</h2>
-  <p>Sova Nanny is published by ForgeLabs Systems (Poland). Questions about this policy: <a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a>.</p>
+  <div class="lead">
+    <h2>The short version</h2>
+    <p>Sova Nanny turns two Android phones into a baby monitor over your own Wi-Fi. There is no account, no sign-in, no server of ours and no cloud. Sound and video travel directly from the phone in the nursery to the phone in your pocket and never leave your home network. We do not collect, store or sell any personal data, and the app contains no advertising or analytics.</p>
+  </div>
 
-  <h2>What the app does with sound and video</h2>
-  <ul>
-    <li><strong>Microphone (nursery phone).</strong> The phone placed in the nursery listens continuously while monitoring is on. The audio is analysed on that phone to tell crying from other sounds, and – depending on the listening mode you choose – streamed to the parent phone over your local Wi-Fi network. Audio is <strong>not recorded, not saved and not uploaded</strong>. When monitoring is stopped, the microphone is released.</li>
-    <li><strong>Microphone (parent phone).</strong> Used only while you hold the “Talk” button, to send your voice to the nursery phone. Nothing is stored.</li>
-    <li><strong>Camera (nursery phone, optional).</strong> Turned on only while a parent phone is actively watching, and only if you allowed camera access. The video is streamed to the parent phone over the local network and is <strong>never recorded or uploaded</strong>.</li>
-    <li><strong>Sound classification.</strong> The cry detector runs entirely on the nursery phone using an on-device model. No audio or derived data is sent to us or to any third party.</li>
-  </ul>
+  <main>
+    <h2>Who we are</h2>
+    <p>Sova Nanny is published by ForgeLabs Systems (Poland). Questions about this policy: <a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a>.</p>
 
-  <h2>Data we collect</h2>
-  <p><strong>None.</strong> We have no servers, no user accounts and no analytics or crash-reporting libraries in the app. We cannot see whether you use the app, how, or what it hears.</p>
-  <p>The app keeps a small amount of information on your phone only, so it can work: the role of the phone (nursery or parent), a four-digit pairing code, the local network address and name of the paired phone, your alert and sound settings, and a short diagnostic log kept in memory for troubleshooting (it is not written to a file we can access and disappears when the app is closed). This information stays on your device and is removed when you uninstall the app or clear its data.</p>
+    <h2>What the app does with sound and video</h2>
+    <ul>
+      <li><strong>Microphone (nursery phone).</strong> The phone placed in the nursery listens continuously while monitoring is on. The audio is analysed on that phone to tell crying from other sounds, and — depending on the listening mode you choose — streamed to the parent phone over your local Wi-Fi network. Audio is <strong>not recorded, not saved and not uploaded</strong>. When monitoring is stopped, the microphone is released.</li>
+      <li><strong>Microphone (parent phone).</strong> Used only while you hold the “Talk” button, to send your voice to the nursery phone. Nothing is stored.</li>
+      <li><strong>Camera (nursery phone, optional).</strong> Turned on only while a parent phone is actively watching, and only if you allowed camera access. The video is streamed to the parent phone over the local network and is <strong>never recorded or uploaded</strong>.</li>
+      <li><strong>Sound classification.</strong> The cry detector runs entirely on the nursery phone using an on-device model. No audio or derived data is sent to us or to any third party.</li>
+    </ul>
 
-  <h2>Network use</h2>
-  <p>The two phones talk to each other directly over the Wi-Fi network they share. The app uses local network discovery (mDNS and a UDP beacon) so the parent phone can find the nursery phone, and a direct TCP connection between the two phones for audio, video, status and commands. The app does not connect to the internet; if the phones are not on the same network, it does not work at all.</p>
+    <h2>Data we collect</h2>
+    <p><strong>None.</strong> We have no servers, no user accounts and no analytics or crash-reporting libraries in the app. We cannot see whether you use the app, how, or what it hears.</p>
+    <p>The app keeps a small amount of information on your phone only, so it can work: the role of the phone (nursery or parent), a four-digit pairing code, the local network address and name of the paired phone, your alert and sound settings, and a short diagnostic log kept in memory for troubleshooting (it is not written to a file we can access and disappears when the app is closed). This information stays on your device and is removed when you uninstall the app or clear its data.</p>
 
-  <h2>Permissions and why they are needed</h2>
-  <table>
-    <tr><th>Permission</th><th>Why</th></tr>
-    <tr><td>Microphone</td><td>Listening in the nursery; talking back from the parent phone.</td></tr>
-    <tr><td>Camera</td><td>Optional live video from the nursery while a parent is watching.</td></tr>
-    <tr><td>Notifications</td><td>The persistent “monitoring” notification and the alarm (crying, lost connection, overheating nursery phone).</td></tr>
-    <tr><td>Full-screen notifications</td><td>Showing the alarm on the lock screen so it can be silenced or stopped without unlocking the phone.</td></tr>
-    <tr><td>Exact alarms</td><td>A watchdog timer that restarts the monitor if the system stops it at night.</td></tr>
-    <tr><td>Run at startup</td><td>Bringing the monitor back after the phone restarts (for example after a system update), if it was running before.</td></tr>
-    <tr><td>Ignore battery optimisations (request)</td><td>Asking you to exempt the app from battery optimisation so the monitor is not put to sleep. The system shows the request; you decide.</td></tr>
-    <tr><td>Do Not Disturb access</td><td>Optional: letting the nursery phone silence its own notifications so they do not wake the baby. Only if you turn it on.</td></tr>
-    <tr><td>Wi-Fi state, multicast, network state, internet</td><td>Finding and talking to the other phone on your local network. No internet traffic.</td></tr>
-    <tr><td>Foreground service, wake lock, vibrate</td><td>Keeping the monitor running with the screen off and making the alarm felt.</td></tr>
-  </table>
+    <h2>Network use</h2>
+    <p>The two phones talk to each other directly over the Wi-Fi network they share. The app uses local network discovery (mDNS and a UDP beacon) so the parent phone can find the nursery phone, and a direct TCP connection between the two phones for audio, video, status and commands. The app does not connect to the internet; if the phones are not on the same network, it does not work at all.</p>
 
-  <h2>Children</h2>
-  <p>The app is intended for parents and caregivers. The sound it processes may include a child’s voice, but it is processed only on your own devices, is never recorded, and is never transmitted outside your home network. We do not collect personal information from anyone, including children.</p>
+    <h2>Permissions and why they are needed</h2>
+    <dl class="perms">
+      <div class="perm"><dt>Microphone</dt><dd>Listening in the nursery; talking back from the parent phone.</dd></div>
+      <div class="perm"><dt>Camera</dt><dd>Optional live video from the nursery while a parent is watching.</dd></div>
+      <div class="perm"><dt>Notifications</dt><dd>The persistent “monitoring” notification and the alarm (crying, lost connection, overheating nursery phone).</dd></div>
+      <div class="perm"><dt>Full-screen notifications</dt><dd>Showing the alarm on the lock screen so it can be silenced or stopped without unlocking the phone.</dd></div>
+      <div class="perm"><dt>Exact alarms</dt><dd>A watchdog timer that restarts the monitor if the system stops it at night.</dd></div>
+      <div class="perm"><dt>Run at startup</dt><dd>Bringing the monitor back after the phone restarts (for example after a system update), if it was running before.</dd></div>
+      <div class="perm"><dt>Ignore battery optimisations (request)</dt><dd>Asking you to exempt the app from battery optimisation so the monitor is not put to sleep. The system shows the request; you decide.</dd></div>
+      <div class="perm"><dt>Do Not Disturb access</dt><dd>Optional: letting the nursery phone silence its own notifications so they do not wake the baby. Only if you turn it on.</dd></div>
+      <div class="perm"><dt>Wi-Fi state, multicast, network state, internet</dt><dd>Finding and talking to the other phone on your local network. No internet traffic.</dd></div>
+      <div class="perm"><dt>Foreground service, wake lock, vibrate</dt><dd>Keeping the monitor running with the screen off and making the alarm felt.</dd></div>
+    </dl>
 
-  <h2>Third parties</h2>
-  <p>The app includes no third-party advertising, analytics, tracking or crash-reporting components. The on-device sound-classification library (LiteRT) runs locally and does not communicate over the network. The app is distributed through Google Play; Google’s own data practices for app distribution are described in Google’s privacy policy.</p>
+    <h2>Children</h2>
+    <p>The app is intended for parents and caregivers. The sound it processes may include a child’s voice, but it is processed only on your own devices, is never recorded, and is never transmitted outside your home network. We do not collect personal information from anyone, including children.</p>
 
-  <h2>Purchases</h2>
-  <p>Live video is an optional one-time purchase (“Sova Pro”) made through Google Play. The payment is handled entirely by Google; we never see your payment details. The app only stores on the phone the fact that the purchase was made, so the feature stays unlocked. A nursery phone remembers that a parent phone with Sova Pro has connected to it, so the whole family can use video after one purchase. No purchase information leaves your devices other than through Google Play itself.</p>
+    <h2>Third parties</h2>
+    <p>The app includes no third-party advertising, analytics, tracking or crash-reporting components. The on-device sound-classification library (LiteRT) runs locally and does not communicate over the network. The app is distributed through Google Play; Google’s own data practices for app distribution are described in Google’s privacy policy.</p>
 
-  <h2>Security</h2>
-  <p>A parent phone can connect to a nursery phone only with the four-digit pairing code shown on the nursery phone. Traffic stays within your local network; its security depends on the security of your Wi-Fi network, so we recommend a password-protected network you control.</p>
+    <h2>Purchases</h2>
+    <p>Live video is an optional one-time purchase (“Sova Pro”) made through Google Play. The payment is handled entirely by Google; we never see your payment details. The app only stores on the phone the fact that the purchase was made, so the feature stays unlocked. A nursery phone remembers that a parent phone with Sova Pro has connected to it, so the whole family can use video after one purchase. No purchase information leaves your devices other than through Google Play itself.</p>
 
-  <h2>Your choices</h2>
-  <ul>
-    <li>Stop monitoring at any time from the app or from the notification; this releases the microphone and camera.</li>
-    <li>Revoke any permission in Android settings; the related feature stops working, the rest of the app continues.</li>
-    <li>Uninstalling the app removes all its data from the phone.</li>
-  </ul>
+    <h2>Security</h2>
+    <p>A parent phone can connect to a nursery phone only with the four-digit pairing code shown on the nursery phone. Traffic stays within your local network; its security depends on the security of your Wi-Fi network, so we recommend a password-protected network you control.</p>
 
-  <h2>Changes to this policy</h2>
-  <p>If the app ever starts handling data differently, this page will be updated and the effective date changed. The current version is always available at this address.</p>
+    <h2>Your choices</h2>
+    <ul>
+      <li>Stop monitoring at any time from the app or from the notification; this releases the microphone and camera.</li>
+      <li>Revoke any permission in Android settings; the related feature stops working, the rest of the app continues.</li>
+      <li>Uninstalling the app removes all its data from the phone.</li>
+    </ul>
 
-  <h2>Contact</h2>
-  <p><a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a></p>
+    <h2>Changes to this policy</h2>
+    <p>If the app ever starts handling data differently, this page will be updated and the effective date changed. The current version is always available at this address.</p>
 
-  <footer>Sova Nanny is not a medical device and does not monitor breathing, movement or health.</footer>
-</main>
+    <h2>Contact</h2>
+    <p><a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a></p>
+
+    <p class="note">This page loads no fonts, scripts, trackers or images from anywhere else. Opening it tells us nothing about you, which is the least a privacy policy can do.</p>
+  </main>
+
+  <footer>
+    <div class="sig">
+      <span>Sova Nanny is not a medical device and does not monitor breathing, movement or health.</span>
+    </div>
+    <div class="sig" style="margin-top:.6rem;">
+      <span>© 2026 ForgeLabs Systems</span>
+      <a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a>
+    </div>
+  </footer>
+
+</div>
 </body>
 </html>
