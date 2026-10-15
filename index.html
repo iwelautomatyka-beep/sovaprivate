@@ -16,13 +16,19 @@
 
   Data „Effective date" zmienia sie TYLKO wtedy, gdy zmienia sie sposob przetwarzania danych.
   Przeredagowanie wygladu nia nie rusza.
+
+  14.10.2026: wersja z alarmami przez internet (PLAN_ZDALNY.md, etap 1). Zdanie „the app does
+  not connect to the internet" przestalo byc prawda, wiec cala strona mowi teraz dwie rzeczy
+  naraz i musi je trzymac rozdzielnie: DZWIEK I OBRAZ nigdy nie opuszczaja domu; ZDARZENIA
+  (placz, przegrzanie, tetno) opuszczaja go tylko, gdy czlowiek wlaczy to na telefonie niani.
+  Publikowac razem z wydaniem, ktore ma te funkcje (build z ALERT_BASE_URL), nie wczesniej.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sova Nanny — Privacy Policy</title>
-<meta name="description" content="Privacy policy for Sova Nanny, a Wi-Fi baby monitor for two Android phones. No account, no server, nothing leaves your home network.">
+<meta name="description" content="Privacy policy for Sova Nanny, a Wi-Fi baby monitor for two Android phones. No account. Sound and video never leave your home network. Optional alerts over the internet carry events only, never sound.">
 <meta name="theme-color" content="#141218" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f7f5fb" media="(prefers-color-scheme: light)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%238B7CFF' stroke-width='7' stroke-linejoin='round'%3E%3Cpath d='M16 12 L21.42 37.5 A33 33 0 1 0 78.58 37.5 L84 12 L50 22 Z'/%3E%3Ccircle cx='35' cy='51' r='12.5'/%3E%3Ccircle cx='65' cy='51' r='12.5'/%3E%3C/g%3E%3Cg fill='%238B7CFF'%3E%3Ccircle cx='35' cy='51' r='5'/%3E%3Ccircle cx='65' cy='51' r='5'/%3E%3C/g%3E%3C/svg%3E">
@@ -206,7 +212,7 @@
     <p class="eyebrow">Baby monitor</p>
 
     <h2 class="doc-title" style="border:0;padding:0;">Privacy Policy</h2>
-    <p class="stamp">Effective 3 October 2026 · Android app <code>com.iwelautomatyka.sova</code></p>
+    <p class="stamp">Effective 14 October 2026 · Android app <code>com.iwelautomatyka.sova</code></p>
   </header>
 
   <div class="pillars">
@@ -217,7 +223,7 @@
     </div>
     <div class="pillar">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 19.4a4.6 4.6 0 0 1-.6-9.16 6.2 6.2 0 0 1 11.9-1.1A4.2 4.2 0 0 1 17.8 19.4z"/><path d="M4 4l16 16"/></svg>
-      <b>No cloud</b><span>No server of ours</span>
+      <b>Sound stays home</b><span>Never leaves your Wi-Fi</span>
     </div>
     <div class="pillar">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0v-5a3 3 0 0 1 3-3z"/><path d="M5.4 11.2a6.6 6.6 0 0 0 13.2 0M12 17.8V21"/><path d="M4 4l16 16"/></svg>
@@ -227,7 +233,7 @@
 
   <div class="lead">
     <h2>The short version</h2>
-    <p>Sova Nanny turns two Android phones into a baby monitor over your own Wi-Fi. There is no account, no sign-in, no server of ours and no cloud. Sound and video travel directly from the phone in the nursery to the phone in your pocket and never leave your home network. We do not collect, store or sell any personal data, and the app contains no advertising or analytics.</p>
+    <p>Sova Nanny turns two Android phones into a baby monitor over your own Wi-Fi. There is no account and no sign-in. Sound and video travel directly from the phone in the nursery to the phone in your pocket and never leave your home network. One feature, <em>alerts over the internet</em>, uses the internet: it is on by default and can be switched off on the nursery phone. While it is on, the nursery phone sends short event messages (“crying”, “overheating”, “still alive”) to our alert server so the parent phone can be woken even away from home. Those messages never contain sound or video. We do not sell data and the app contains no advertising or analytics.</p>
   </div>
 
   <main>
@@ -243,11 +249,22 @@
     </ul>
 
     <h2>Data we collect</h2>
-    <p><strong>None.</strong> We have no servers, no user accounts and no analytics or crash-reporting libraries in the app. We cannot see whether you use the app, how, or what it hears.</p>
-    <p>The app keeps a small amount of information on your phone only, so it can work: the role of the phone (nursery or parent), a four-digit pairing code, the local network address and name of the paired phone, your alert and sound settings, and a short diagnostic log kept in memory for troubleshooting (it is not written to a file we can access and disappears when the app is closed). This information stays on your device and is removed when you uninstall the app or clear its data.</p>
+    <p><strong>Nothing beyond the alert messages described below, and nothing at all if you switch “Alerts over the internet” off.</strong> There are no user accounts and no analytics or crash-reporting libraries in the app. With that feature off, the app never contacts a server of ours and we cannot see whether you use the app, how, or what it hears.</p>
+    <p>The app keeps a small amount of information on your phone only, so it can work: the role of the phone (nursery or parent), a four-digit pairing code, a random room key, the local network address and name of the paired phone, your alert and sound settings, and a short diagnostic log kept in memory for troubleshooting (it is not written to a file we can access and disappears when the app is closed). This information stays on your device and is removed when you uninstall the app or clear its data.</p>
+
+    <h2>Alerts over the internet</h2>
+    <p>Sound and video need the parent phone to be on the same Wi-Fi as the nursery phone. Alerts do not: with <em>Alerts over the internet</em> on (the default, with a switch on the nursery phone), the nursery phone sends small messages to our alert server, and the parent phone registers with that server to receive push notifications. This is what leaves your home, and nothing else:</p>
+    <ul>
+      <li><strong>Events from the nursery phone:</strong> that crying or shouting was detected and when it stopped, that the phone is overheating, and a “still alive” heartbeat every five minutes with the phone’s battery level, charging state, temperature, uptime and whether crying is in progress. <strong>No sound, no video, no transcript</strong> of any kind is ever sent — the cry detector runs on the nursery phone and only its verdict travels.</li>
+      <li><strong>A room key:</strong> a random 128-bit secret generated on the nursery phone and handed to the parent phone at pairing, encrypted (see Security). The server stores it so it can verify that messages come from your phones. The server identifies your room by a hash of this key; the key is not your name, your Wi-Fi name or any identifier of you.</li>
+      <li><strong>Listening and watching away from home (Sova Pro):</strong> when you turn on <em>Listen</em> or <em>Watch</em> while your phone is not on the nursery’s Wi-Fi, the nursery phone sends compressed audio (and video, if you asked for it) to the parent phone <em>through</em> our alert server. The server passes the bytes on and keeps nothing: the stream is encrypted end to end with the room key, which the server does not have, it is held only in memory for the moment of forwarding, and it stops the instant you close the screen or switch listening off. Nothing is recorded.</li>
+      <li><strong>From the parent phone:</strong> a push-notification token issued by Google (Firebase Cloud Messaging). It is a device identifier that lets the server ask Google to wake your phone; it is the only way an Android phone can be reached with a notification while the app is not running.</li>
+    </ul>
+    <p>The server keeps, per room: the room key, the push tokens of registered parent phones, the time of the last heartbeat and the last reported battery level and temperature. Events are forwarded immediately and not stored. If the server does not hear from a nursery phone for about twelve minutes it sends a “nursery offline” notification to the parent phones. A room whose nursery phone has been silent for thirty days is deleted automatically. The server is hosted on Cloudflare Workers; notifications are delivered through Google’s Firebase Cloud Messaging. Both act as our service providers and receive only what is described here. All traffic uses TLS and every message is signed with the room key.</p>
+    <p>Switching the feature off on the nursery phone stops all messages immediately. “Forget nursery” on a parent phone removes its push token from the room. Generating a new pairing code on the nursery phone creates a new room key, which makes the old room unreachable.</p>
 
     <h2>Network use</h2>
-    <p>The two phones talk to each other directly over the Wi-Fi network they share. The app uses local network discovery (mDNS and a UDP beacon) so the parent phone can find the nursery phone, and a direct TCP connection between the two phones for audio, video, status and commands. The app does not connect to the internet; if the phones are not on the same network, it does not work at all.</p>
+    <p>The two phones talk to each other directly over the Wi-Fi network they share. The app uses local network discovery (mDNS and a UDP beacon) so the parent phone can find the nursery phone, and a direct, encrypted TCP connection between the two phones for audio, video, status and commands. Sound and video need that shared network; without it they do not work. The only internet traffic is the optional alert traffic described above, plus Google Play for purchases.</p>
 
     <h2>Permissions and why they are needed</h2>
     <dl class="perms">
@@ -259,26 +276,28 @@
       <div class="perm"><dt>Run at startup</dt><dd>Bringing the monitor back after the phone restarts (for example after a system update), if it was running before.</dd></div>
       <div class="perm"><dt>Ignore battery optimisations (request)</dt><dd>Asking you to exempt the app from battery optimisation so the monitor is not put to sleep. The system shows the request; you decide.</dd></div>
       <div class="perm"><dt>Do Not Disturb access</dt><dd>Optional: letting the nursery phone silence its own notifications so they do not wake the baby. Only if you turn it on.</dd></div>
-      <div class="perm"><dt>Wi-Fi state, multicast, network state, internet</dt><dd>Finding and talking to the other phone on your local network. No internet traffic.</dd></div>
+      <div class="perm"><dt>Wi-Fi state, multicast, network state, internet</dt><dd>Finding and talking to the other phone on your local network; with “Alerts over the internet” on, sending events to the alert server and receiving push notifications.</dd></div>
       <div class="perm"><dt>Foreground service, wake lock, vibrate</dt><dd>Keeping the monitor running with the screen off and making the alarm felt.</dd></div>
     </dl>
 
     <h2>Children</h2>
-    <p>The app is intended for parents and caregivers. The sound it processes may include a child’s voice, but it is processed only on your own devices, is never recorded, and is never transmitted outside your home network. We do not collect personal information from anyone, including children.</p>
+    <p>The app is intended for parents and caregivers. The sound it processes may include a child’s voice, but it is processed only on your own devices, is never recorded, and is never transmitted outside your home network. With alerts over the internet on, the only thing that leaves is the detector’s verdict (“crying detected”), never the sound itself. We do not collect personal information from anyone, including children.</p>
 
     <h2>Third parties</h2>
-    <p>The app includes no third-party advertising, analytics, tracking or crash-reporting components. The on-device sound-classification library (LiteRT) runs locally and does not communicate over the network. The app is distributed through Google Play; Google’s own data practices for app distribution are described in Google’s privacy policy.</p>
+    <p>The app includes no third-party advertising, analytics, tracking or crash-reporting components. The on-device sound-classification library (LiteRT) runs locally and does not communicate over the network. For the optional alerts over the internet we use two service providers: Cloudflare (hosting of the alert server) and Google Firebase Cloud Messaging (delivery of push notifications; the Firebase library in the app is used for this purpose only and its analytics are disabled). The app is distributed through Google Play; Google’s own data practices for app distribution are described in Google’s privacy policy.</p>
 
     <h2>Purchases</h2>
     <p>Live video is an optional one-time purchase (“Sova Pro”) made through Google Play. The payment is handled entirely by Google; we never see your payment details. The app only stores on the phone the fact that the purchase was made, so the feature stays unlocked. A nursery phone remembers that a parent phone with Sova Pro has connected to it, so the whole family can use video after one purchase. No purchase information leaves your devices other than through Google Play itself.</p>
 
     <h2>Security</h2>
-    <p>A parent phone can connect to a nursery phone only with the four-digit pairing code shown on the nursery phone. Traffic stays within your local network; its security depends on the security of your Wi-Fi network, so we recommend a password-protected network you control.</p>
+    <p>A parent phone joins a nursery phone by scanning the code on its screen or by typing its four-digit PIN. The PIN itself is never sent over the network: pairing uses a password-authenticated key exchange (SRP-6a), so a device on your Wi-Fi that watches the exchange learns nothing, and guessing requires a separate attempt per guess, which the nursery phone limits (five wrong PINs lock pairing for a minute; twenty replace the PIN). After pairing, every connection between the two phones is authenticated with the room key and encrypted end to end (ephemeral ECDH P-256, AES-256-GCM), so sound, video and commands cannot be read or injected by other devices on the same network. Alert traffic to our server is encrypted (TLS) and every message is signed with the room key. Giving the room a new code on the nursery phone replaces both the PIN and the room key and disconnects every paired phone.</p>
 
     <h2>Your choices</h2>
     <ul>
       <li>Stop monitoring at any time from the app or from the notification; this releases the microphone and camera.</li>
       <li>Revoke any permission in Android settings; the related feature stops working, the rest of the app continues.</li>
+      <li>Switch “Alerts over the internet” off on the nursery phone and nothing ever leaves your home; the messages stop immediately.</li>
+      <li>“Forget nursery” on a parent phone removes that phone from the room on our server. A room is deleted automatically after thirty days without contact.</li>
       <li>Uninstalling the app removes all its data from the phone.</li>
     </ul>
 
