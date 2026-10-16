@@ -245,7 +245,7 @@
     <p>Away from home, only these four things leave, and nothing else:</p>
     <ul>
       <li><strong>Alerts.</strong> The nursery phone tells our server that crying started or stopped, that the phone is overheating, and that it is still alive, together with its battery level, temperature and signal strength. <strong>No sound and no video</strong> are ever part of this. Crying is recognised on the nursery phone itself; only the answer travels.</li>
-      <li><strong>Sound and video, with Sova Pro.</strong> While you listen or watch from outside your home, the nursery phone sends them to your phone through our server, and your voice goes back the same way. We pass the bytes on and keep none of them. They are encrypted with a key only your two phones can work out, so <strong>we cannot hear or see anything</strong>, and neither can anyone who gets hold of our server.</li>
+      <li><strong>Sound and video, with Sova Pro.</strong> While you listen or watch from outside your home, the nursery phone sends them to your phone through our server, and your voice goes back the same way. We pass the bytes on and keep none of them. They are encrypted with a key only your two phones can work out, so <strong>we cannot hear or see anything</strong>, and neither can anyone who gets hold of our server. The same connection is opened for a few seconds in two other moments: when you ask for the free twenty minutes, because that request has to reach the nursery phone, and just after you finish speaking, so that a second message starts at once instead of waiting. In both cases it carries nothing but that request, and closes by itself.</li>
       <li><strong>A key that proves it is you.</strong> Your two phones share a secret when you pair them, and that secret never leaves them. What our server receives is a different key made from it, enough to check that messages really come from your phones and useless for anything else.</li>
       <li><strong>An address for notifications.</strong> A token from Google that lets us wake your phone. It is the only way to reach an Android phone with a notification while the app is not running.</li>
     </ul>
@@ -280,7 +280,7 @@
     <p>The app is for parents and carers. The sound it listens to will include a child's voice, but that sound is examined on your own phone and never recorded. When you are away from home, what reaches us is the verdict, "crying", and never the sound itself; with Sova Pro the sound passes through us encrypted with a key we do not have. We collect no personal information about anyone, children included.</p>
 
     <h2>Purchases</h2>
-    <p>Live video, and listening and watching while away from home, are a one-time purchase called Sova Pro, made through Google Play. Google handles the payment; we never see your payment details. The phone remembers that the purchase was made, and the nursery remembers that a parent with Sova Pro has connected to it, so one purchase covers the whole family. You can try these features for twenty minutes before buying.</p>
+    <p>Live video, and listening and watching while away from home, are a one-time purchase called Sova Pro, made through Google Play. Google handles the payment; we never see your payment details. The phone remembers that the purchase was made, and the nursery remembers that a parent with Sova Pro has connected to it, so one purchase covers the whole family. You can try these features for twenty minutes before buying. The nursery phone counts those minutes and only while something is actually playing; if you ask for them while away from home, the request travels to it through our server like everything else described above.</p>
 
     <h2>Security</h2>
     <p>A parent phone joins the nursery by scanning the code on its screen or typing its four-digit PIN. <strong>The PIN itself is never sent over the network</strong>, and the nursery blocks a device that keeps guessing. Everything the two phones say to each other afterwards is encrypted, so neither your neighbours nor we can read it. Giving the room a new code on the nursery phone disconnects every paired phone and makes the old one unreachable.</p>
@@ -290,7 +290,7 @@
     <ul>
       <li>Stop monitoring at any time, from the app or from its notification. The microphone and camera are released at once.</li>
       <li>Switch alerts over the internet off on the nursery phone, and nothing ever leaves your home again.</li>
-      <li>Close the listening or video screen, and the stream through our server stops at once. Nothing of it remains anywhere.</li>
+      <li>Close the listening or video screen, and the stream through our server stops at once; the connection itself closes a few seconds later. Nothing of it remains anywhere.</li>
       <li>Use "Forget nursery" on a parent phone to take that phone out of the pair and off our server.</li>
       <li>Uninstall the app, and everything it kept on the phone goes with it.</li>
     </ul>
