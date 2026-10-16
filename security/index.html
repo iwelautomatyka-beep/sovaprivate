@@ -1,0 +1,281 @@
+<!doctype html>
+<!--
+  Strona techniczna Sova Nanny: szczegoly, ktore wylecialy z polityki prywatnosci, zeby
+  polityke dalo sie przeczytac bez przygotowania (decyzja usera 16.10.2026).
+
+  Podzial obowiazuje w obie strony:
+  - POLITYKA mowi, CO wychodzi z telefonu, do kogo i na jak dlugo. Prostym jezykiem, bez nazw
+    algorytmow i bez nastaw serwera, ktore zmieniaja sie z wdrozenia na wdrozenie.
+  - TA STRONA mowi, JAK to jest zrobione. Tu wolno podawac nazwy i liczby, bo nikt nie czyta
+    jej po to, zeby dowiedziec sie, czy aplikacja go podsluchuje.
+
+  Nie dopisywac tu zadnej obietnicy o zbieraniu danych: od tego jest polityka, a dwa miejsca
+  z ta sama obietnica rozjezdzaja sie przy pierwszej zmianie.
+
+  Zasady wygladu jak w polityce: zero zasobow zewnetrznych, jeden plik, linki WZGLEDNE
+  (`../` do polityki), zeby dzialalo pod dowolnym prefiksem sciezki na GitHub Pages.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sova Nanny — How Sova is secured</title>
+<meta name="description" content="How Sova Nanny is secured: pairing without sending the PIN, end-to-end encryption between the two phones, and a relay server that forwards sound and video without being able to read them.">
+<meta name="theme-color" content="#141218" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f5fb" media="(prefers-color-scheme: light)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%238B7CFF' stroke-width='7' stroke-linejoin='round'%3E%3Cpath d='M16 12 L21.42 37.5 A33 33 0 1 0 78.58 37.5 L84 12 L50 22 Z'/%3E%3Ccircle cx='35' cy='51' r='12.5'/%3E%3Ccircle cx='65' cy='51' r='12.5'/%3E%3C/g%3E%3Cg fill='%238B7CFF'%3E%3Ccircle cx='35' cy='51' r='5'/%3E%3Ccircle cx='65' cy='51' r='5'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  /* Paleta 1:1 z aplikacji (ui/theme/Color.kt). Ciemny motyw jest domyslny, bo taka jest apka;
+     jasny istnieje, bo te strone czyta sie w dzien, na biurku, a nie o trzeciej w nocy. */
+  :root {
+    color-scheme: dark light;
+    --bg: #141218;
+    --bg-2: #1a1724;
+    --surface: #1C1926;
+    --surface-2: #252132;
+    --line: #322C45;
+    --fg: #F2F6FA;
+    --muted: #B5AECA;
+    --faint: #8E86A8;
+    --violet: #8B7CFF;
+    --violet-dim: #2A2350;
+    --teal: #2DD4BF;
+    --teal-dim: #134E45;
+    --shadow: 0 1px 0 rgba(255,255,255,.03), 0 18px 40px -24px rgba(0,0,0,.9);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f7f5fb;
+      --bg-2: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f1eef8;
+      --line: #e3dff0;
+      --fg: #1b1826;
+      --muted: #585370;
+      --faint: #6f6a86;
+      --violet: #5a49d6;
+      --violet-dim: #ece9fb;
+      --teal: #0e8d7c;
+      --teal-dim: #e2f5f1;
+      --shadow: 0 1px 2px rgba(27,24,38,.05), 0 14px 32px -22px rgba(27,24,38,.35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Poswiata w tle: fiolet u gory, teal nizej. Dwa kolory marki, nic wiecej. */
+  .glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(60rem 32rem at 50% -14rem, color-mix(in srgb, var(--violet) 26%, transparent), transparent 70%),
+      radial-gradient(44rem 26rem at 88% 24rem, color-mix(in srgb, var(--teal) 13%, transparent), transparent 70%);
+  }
+  @supports not (background: color-mix(in srgb, red, blue)) {
+    .glow { background: radial-gradient(60rem 32rem at 50% -14rem, rgba(139,124,255,.22), transparent 70%); }
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 46rem; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
+  /* ── naglowek ───────────────────────────────────────────────────────────── */
+  header { padding: 3.5rem 0 2.25rem; text-align: center; }
+  .mark { width: 76px; height: 76px; display: block; margin: 0 auto 1.1rem; }
+  .mark .ring { stroke: var(--teal); opacity: .55; }
+  .mark .ring2 { stroke: var(--violet); opacity: .35; }
+  .mark .owl { fill: none; stroke: var(--violet); stroke-width: 4.2; stroke-linejoin: round; stroke-linecap: round; }
+  .mark .pupil { fill: var(--violet); }
+  .wordmark {
+    margin: 0; font-size: clamp(1.9rem, 7vw, 2.6rem); line-height: 1.05;
+    letter-spacing: .14em; font-weight: 700; text-transform: uppercase;
+  }
+  .eyebrow {
+    margin: .7rem 0 0; font-size: .72rem; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--teal); font-weight: 700;
+  }
+  .doc-title { margin: 2.1rem 0 .4rem; font-size: clamp(1.45rem, 5vw, 1.9rem); line-height: 1.2; }
+  .stamp { margin: 0; color: var(--faint); font-size: .92rem; }
+  .stamp code { font-size: .88em; color: var(--muted); }
+
+  /* ── trzy filary ────────────────────────────────────────────────────────── */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin: 2rem 0 .5rem; }
+  .pillar {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 1rem .9rem; text-align: center; box-shadow: var(--shadow);
+  }
+  .pillar svg { width: 26px; height: 26px; stroke: var(--teal); fill: none; stroke-width: 1.7;
+                stroke-linecap: round; stroke-linejoin: round; margin-bottom: .45rem; }
+  .pillar b { display: block; font-size: .95rem; }
+  .pillar span { display: block; color: var(--faint); font-size: .82rem; margin-top: .15rem; }
+  /* Na telefonie trzy kolumny sie nie mieszcza, ale trzy WYSOKIE karty zjadaly caly ekran
+     i spychaly tresc polityki pod fold. Ikona po lewej, tekst po prawej: ta sama informacja
+     w jednej trzeciej wysokosci. */
+  @media (max-width: 34rem) {
+    .pillars { grid-template-columns: 1fr; gap: .5rem; }
+    .pillar {
+      display: grid; grid-template-columns: auto 1fr; align-items: center;
+      gap: 0 .85rem; text-align: left; padding: .8rem 1rem;
+    }
+    .pillar svg { margin: 0; grid-row: span 2; }
+    .pillar b { align-self: end; }
+    .pillar span { align-self: start; }
+  }
+
+  /* ── tresc ──────────────────────────────────────────────────────────────── */
+  main { margin-top: 1.6rem; }
+  h2 {
+    font-size: 1.16rem; margin: 2.6rem 0 .7rem; padding-left: .85rem;
+    border-left: 3px solid var(--violet); line-height: 1.3;
+  }
+  p, li { margin: .55rem 0; color: var(--muted); }
+  p strong, li strong { color: var(--fg); font-weight: 650; }
+  ul { padding-left: 1.15rem; }
+  li { margin: .7rem 0; }
+  a { color: var(--violet); text-underline-offset: .18em; }
+  a:hover { color: var(--teal); }
+
+  .lead {
+    background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--teal);
+    border-radius: 16px; padding: 1.15rem 1.3rem; margin: 1.8rem 0 0; box-shadow: var(--shadow);
+  }
+  .lead h2 { border: 0; padding: 0; margin: 0 0 .4rem; font-size: 1rem;
+             letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+  .lead p { margin: 0; color: var(--fg); }
+
+  /* Tabela uprawnien: na szerokim ekranie tabela, na telefonie karty. Poziomy pasek przewijania
+     w dokumencie prawnym to sposob na to, zeby polowy warunkow nikt nie przeczytal. */
+  .perms { margin: 1rem 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+           background: var(--surface); box-shadow: var(--shadow); }
+  .perm { display: grid; grid-template-columns: 15rem 1fr; gap: 0 1.1rem;
+          padding: .85rem 1.1rem; border-top: 1px solid var(--line); }
+  .perm:first-child { border-top: 0; }
+  .perm dt { font-weight: 650; color: var(--fg); }
+  .perm dd { margin: 0; color: var(--muted); }
+  @media (max-width: 40rem) {
+    .perm { grid-template-columns: 1fr; gap: .2rem; }
+  }
+
+  footer {
+    margin-top: 3.2rem; padding-top: 1.6rem; border-top: 1px solid var(--line);
+    color: var(--faint); font-size: .9rem;
+  }
+  .note { background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px;
+          padding: .9rem 1.1rem; margin: 1.2rem 0 1.6rem; color: var(--muted); font-size: .92rem; }
+  .sig { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: baseline; }
+
+  /* Wydruk: reviewer w Play czasem drukuje albo robi PDF. */
+  @media print {
+    .glow, .pillars { display: none; }
+    body { background: #fff; color: #000; font-size: 11pt; }
+    .lead, .perms, .note { border-color: #bbb; box-shadow: none; background: #fff; }
+    p, li, .perm dd { color: #222; }
+    h2 { border-left-color: #666; }
+    a { color: #000; text-decoration: underline; }
+  }
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<div class="wrap">
+
+  <header>
+    <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Sova Nanny">
+      <!-- pierscien jak na ekranie stanu w aplikacji, tyle ze uproszczony do kreskowanego okregu -->
+      <circle class="ring" cx="50" cy="50" r="47" fill="none" stroke-width="2.4"
+              stroke-dasharray="1.6 7.2" stroke-linecap="round"/>
+      <circle class="ring2" cx="50" cy="50" r="42" fill="none" stroke-width="1.6"
+              stroke-dasharray="1.2 9" stroke-linecap="round"/>
+      <!-- geometria 1:1 z MarkPaths.kt: glowa i oczy obrysem, zrenice wypelnione -->
+      <g transform="translate(50 50) scale(.80) translate(-50 -50)">
+        <path class="owl" d="M16,12 L21.42,37.5 A33,33 0 1 0 78.58,37.5 L84,12 L50,22 Z"/>
+        <circle class="owl" cx="35" cy="51" r="12.5"/>
+        <circle class="owl" cx="65" cy="51" r="12.5"/>
+        <circle class="pupil" cx="35" cy="51" r="4"/>
+        <circle class="pupil" cx="65" cy="51" r="4"/>
+      </g>
+    </svg>
+    <h1 class="wordmark">Sova Nanny</h1>
+    <p class="eyebrow">Baby monitor</p>
+
+    <h2 class="doc-title" style="border:0;padding:0;">How Sova is secured</h2>
+    <p class="stamp">Technical note · Android app <code>com.iwelautomatyka.sova</code> · <a href="../">Privacy policy</a></p>
+  </header>
+
+  <div class="pillars">
+    <div class="pillar">
+      <!-- sylwetka czlowieka przekreslona; pierwsza wersja byla luk, ktory czytalo sie jako sluchawki -->
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.2a7 7 0 0 1 14 0"/><path d="M3.4 3.4l17.2 17.2"/></svg>
+      <b>PIN never sent</b><span>Pairing proves it instead</span>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 19.4a4.6 4.6 0 0 1-.6-9.16 6.2 6.2 0 0 1 11.9-1.1A4.2 4.2 0 0 1 17.8 19.4z"/><path d="M4 4l16 16"/></svg>
+      <b>Two keys</b><span>We only ever get the weaker one</span>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0v-5a3 3 0 0 1 3-3z"/><path d="M5.4 11.2a6.6 6.6 0 0 0 13.2 0M12 17.8V21"/><path d="M4 4l16 16"/></svg>
+      <b>Relay stays blind</b><span>Forwarded, never readable</span>
+    </div>
+  </div>
+
+  <div class="lead">
+    <h2>In one paragraph</h2>
+    <p>Your two phones share a secret that no server of ours ever receives. Pairing hands it over without the PIN ever crossing the network. At home, the phones talk directly, encrypted end to end. Away from home, their sound and video pass through our server, encrypted with keys worked out from that secret, which is why we can forward them and cannot read them.</p>
+  </div>
+
+  <main>
+    <p class="note">This page is the detail behind one sentence in the <a href="../">privacy policy</a>: that we cannot hear or see what passes through our server. It is written for people who want to check that claim rather than take it. Nothing here is a promise about what we collect; that is the policy's job.</p>
+
+    <h2>Pairing, without ever sending the PIN</h2>
+    <p>The nursery phone shows a four-digit PIN and a QR code. A parent phone joins by scanning the code, or by typing the PIN.</p>
+    <p>Typing the PIN runs a password-authenticated key exchange (SRP-6a, RFC 5054, 2048-bit group, SHA-256). The PIN never travels, in any form: a device listening on your Wi-Fi learns nothing it could guess from later, and each guess costs the attacker one whole attempt against the nursery. The nursery counts those attempts. Five wrong PINs from one address lock pairing for a minute; keep going and the PIN is thrown away and replaced, which ends the attack for good.</p>
+    <p>What the parent receives at the end of a successful pairing is the <strong>room key</strong>: 128 random bits generated on the nursery, handed over inside the encrypted exchange. Everything below is built on it.</p>
+
+    <h2>Two keys, on purpose</h2>
+    <p>The room key stays on your phones. Our server never receives it. What it receives, when the nursery registers, is a <strong>signing key</strong>:</p>
+    <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">signing key = HMAC-SHA-256(room key, "sova-alert-auth")</p>
+    <p>HMAC runs one way. The signing key is enough for the server to verify that a heartbeat, an event or a socket really comes from your phones, and it cannot be turned back into the room key. Since every key that encrypts sound and video is derived from the room key, the server cannot compute any of them.</p>
+    <p>Your room is named by the hash of the signing key, so that registering a key under someone else's room name is rejected. The name identifies nothing about you: not your phone, not your network, not you.</p>
+
+    <h2>At home: the two phones talk directly</h2>
+    <p>The parent phone finds the nursery over mDNS and a UDP beacon, then opens a direct TCP connection. The broadcast carries a tag derived from the room key, never the PIN, so a listener cannot tell which room is which.</p>
+    <p>Each connection starts with an ephemeral ECDH key agreement on P-256, authenticated by HMAC tags computed from the room key, with separate labels for the two ends. Both sides then derive separate keys per direction with HKDF, and every frame after that, sound, video, status and commands alike, is sealed with AES-256-GCM under a counter nonce. A device on your Wi-Fi can see that two phones are talking and nothing more. It cannot read a frame, replay one, or inject one.</p>
+
+    <h2>Away from home: through us, but closed to us</h2>
+    <p>When your phone is not on the nursery's Wi-Fi, both phones open a WebSocket to our server, each request signed with the signing key. The server's whole job is to copy bytes from one socket to the others in the same room. It holds each message in memory for the instant that takes and writes none of them anywhere.</p>
+    <p>Every relayed message carries its own header: a 16-byte sender nonce, an 8-byte counter, then the ciphertext. The key is derived per sender and per direction:</p>
+    <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">key = HKDF(room key, nonce, "sova-relay-n2c")&nbsp;&nbsp;nursery to parent<br>key = HKDF(room key, nonce, "sova-relay-c2n")&nbsp;&nbsp;your voice back</p>
+    <p>AES-256-GCM again, a fresh key per session, and the receiver derives it from the header of the message in front of it, so two nursery sockets overlapping for a moment cannot confuse one another. The server has no room key, so it has no key here at all. Audio is AAC-LC at 32 kbit/s, video is H.264; both are encrypted before they reach the socket and decrypted only on your phone.</p>
+    <p>Alert traffic uses TLS on top of all this, and every request carries a timestamp inside the signature, so a captured request cannot be replayed later.</p>
+
+    <h2>What this does not protect you from</h2>
+    <p>An honest list is worth more than a long one.</p>
+    <ul>
+      <li><strong>Someone holding an unlocked phone.</strong> Either phone in the pair can see and hear the nursery. The app's security begins where the phone's own lock ends.</li>
+      <li><strong>Someone who can read the nursery's screen.</strong> The PIN and QR code are on it, on purpose, because that is what makes pairing a ten-second job. Anyone standing in the room can pair a phone. Give the room a new code afterwards, and the one they paired is out.</li>
+      <li><strong>Us, if you stop trusting the app itself.</strong> Everything above is done by code we wrote and ship. It means that our server cannot read your stream, which is a real and checkable property. It does not mean that an app can prove its own good behaviour; no app can.</li>
+      <li><strong>Traffic analysis.</strong> We can see that a room is active, and how much data moves through it. We cannot see what is in it.</li>
+    </ul>
+
+    <h2>Found a problem?</h2>
+    <p>Write to <a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a>. Security reports are welcome and answered, and nothing here is a trap: the protocol is described above precisely so that it can be checked.</p>
+  </main>
+
+  <footer>
+    <div class="sig">
+      <span>Sova Nanny is not a medical device and does not monitor breathing, movement or health.</span>
+    </div>
+    <div class="sig" style="margin-top:.6rem;">
+      <span>© 2026 ForgeLabs Systems</span>
+      <a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -233,77 +233,70 @@
 
   <div class="lead">
     <h2>The short version</h2>
-    <p>Sova Nanny turns two Android phones into a baby monitor. There is no account and no sign-in. At home, sound and video travel directly from the phone in the nursery to the phone in your pocket over your own Wi-Fi and never leave your home network. Two things use the internet, and both go through a server of ours: <em>alerts over the internet</em> (on by default, with a switch on the nursery phone) send short event messages (“crying”, “overheating”, “still alive”) so the parent phone can be woken even away from home; and <em>listening and watching away from home</em> (part of the optional Sova Pro purchase) relays the nursery’s sound and video to your phone while you are listening or watching. That stream is encrypted with a key that only your two phones can compute, and the server never receives it, so we cannot listen in even while the bytes pass through us. The server forwards and stores nothing of what it relays, and no sound or video is ever recorded anywhere. We do not sell data and the app contains no advertising or analytics.</p>
+    <p>Sova Nanny turns two Android phones into a baby monitor. There is no account and nothing to sign in to. At home, sound and video go straight from the phone in the nursery to the phone in your pocket, over your own Wi-Fi. Two things use the internet, and both pass through a server of ours: <em>alerts</em>, so that the baby can wake you when you are out, and, with Sova Pro, <em>listening and watching</em> while you are out. Both are encrypted with a key we never receive, so we cannot hear or see anything, and nothing is recorded anywhere. There is no advertising, no analytics and nothing to sell.</p>
   </div>
 
   <main>
     <h2>Who we are</h2>
     <p>Sova Nanny is published by ForgeLabs Systems (Poland). Questions about this policy: <a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a>.</p>
 
-    <h2>What the app does with sound and video</h2>
+    <h2>What leaves your phones</h2>
+    <p><strong>At home, nothing.</strong> Sound, video, your voice and every command travel straight between the two phones over the Wi-Fi they share. They do not pass through us and they are not recorded.</p>
+    <p>Away from home, only these four things leave, and nothing else:</p>
     <ul>
-      <li><strong>Microphone (nursery phone).</strong> The phone placed in the nursery listens continuously while monitoring is on. The audio is analysed on that phone to tell crying from other sounds, and — depending on the listening mode you choose — streamed to the parent phone over your local Wi-Fi network, or, when the parent phone is away from home and has Sova Pro, through our relay server (see <em>Alerts and relay over the internet</em>). Audio is <strong>not recorded and not saved</strong>, on the phones or on the server. When monitoring is stopped, the microphone is released.</li>
-      <li><strong>Microphone (parent phone).</strong> Used only while you hold the “Talk” button, to send your voice to the nursery phone. Nothing is stored.</li>
-      <li><strong>Camera (nursery phone, optional).</strong> Turned on only while a parent phone is actively watching, and only if you allowed camera access. The video is streamed to the parent phone over the local network, or through our relay server when the parent phone is away from home with Sova Pro, and is <strong>never recorded</strong>, on the phones or on the server.</li>
-      <li><strong>Sound classification.</strong> The cry detector runs entirely on the nursery phone using an on-device model. No audio or derived data is sent to us or to any third party.</li>
+      <li><strong>Alerts.</strong> The nursery phone tells our server that crying started or stopped, that the phone is overheating, and that it is still alive, together with its battery level, temperature and signal strength. <strong>No sound and no video</strong> are ever part of this. Crying is recognised on the nursery phone itself; only the answer travels.</li>
+      <li><strong>Sound and video, with Sova Pro.</strong> While you listen or watch from outside your home, the nursery phone sends them to your phone through our server, and your voice goes back the same way. We pass the bytes on and keep none of them. They are encrypted with a key only your two phones can work out, so <strong>we cannot hear or see anything</strong>, and neither can anyone who gets hold of our server.</li>
+      <li><strong>A key that proves it is you.</strong> Your two phones share a secret when you pair them, and that secret never leaves them. What our server receives is a different key made from it, enough to check that messages really come from your phones and useless for anything else.</li>
+      <li><strong>An address for notifications.</strong> A token from Google that lets us wake your phone. It is the only way to reach an Android phone with a notification while the app is not running.</li>
+    </ul>
+    <p>All of this is switched on by default and can be switched off on the nursery phone. With it off, the app never contacts a server of ours at all; listening and watching from outside stop working too.</p>
+
+    <h2>What we keep, and for how long</h2>
+    <p>For each pair of phones our server keeps the key that checks your signatures, the notification addresses of your phones, and the last thing the nursery reported: battery, temperature and whether crying is in progress. Alerts are passed on and not stored. Sound and video are never stored, anywhere. When the nursery phone goes quiet for several minutes, we tell your phone that it is offline. When it has been quiet for about a month, everything we hold for those phones is deleted by itself.</p>
+    <p>We have no user accounts and no list of our users. The server runs on Cloudflare and notifications are delivered by Google; both handle only what is described here. There is no advertising, no analytics and no tracking in the app, and we do not sell anything to anyone.</p>
+
+    <h2>What stays on your phone</h2>
+    <p>So that it can work, the app keeps on the phone itself: whether this phone is the nursery or the parent, the four-digit pairing code, the shared secret, the address and name of the paired phone, your sound and alert settings, and a short diagnostic log that lives in memory and disappears when the app closes. None of this reaches us. Uninstalling the app, or clearing its data, removes all of it.</p>
+
+    <h2>Microphone and camera</h2>
+    <ul>
+      <li><strong>Nursery phone.</strong> It listens the whole time monitoring is on, so that it can tell crying from other sounds. Audio is <strong>not recorded and not saved</strong>. When you stop monitoring, the microphone is released.</li>
+      <li><strong>Parent phone.</strong> The microphone is used only while you hold the Talk button, to send your voice to the nursery. Nothing is stored.</li>
+      <li><strong>Camera.</strong> Switched on only while a parent is actually watching, and only if you allowed camera access. The picture is <strong>never recorded</strong>.</li>
     </ul>
 
-    <h2>Data we collect</h2>
-    <p><strong>Nothing beyond the alert messages and the relayed stream described below, and nothing at all if you switch “Alerts over the internet” off.</strong> There are no user accounts and no analytics or crash-reporting libraries in the app. With that feature off, the app never contacts a server of ours (listening and watching away from home need it too, so they are off as well) and we cannot see whether you use the app, how, or what it hears.</p>
-    <p>The app keeps a small amount of information on your phone only, so it can work: the role of the phone (nursery or parent), a four-digit pairing code, a random room key, the local network address and name of the paired phone, your alert and sound settings, and a short diagnostic log kept in memory for troubleshooting (it is not written to a file we can access and disappears when the app is closed). This information stays on your device and is removed when you uninstall the app or clear its data.</p>
-
-    <h2>Alerts and relay over the internet</h2>
-    <p>With <em>Alerts over the internet</em> on (the default, with a switch on the nursery phone), the nursery phone sends small messages to our server, and the parent phone registers with that server to receive push notifications. With Sova Pro, the same server also relays sound and video to a parent phone that is away from home, for as long as that parent is listening or watching. This is what leaves your home, and nothing else:</p>
-    <ul>
-      <li><strong>Events from the nursery phone:</strong> that crying or shouting was detected and when it stopped, that the phone is overheating, and a “still alive” heartbeat (every five minutes while every parent phone is at home, every minute while one is away) with the phone’s battery level, charging state, temperature, signal strength, uptime, whether crying is in progress, when the last cry started and ended, whether Sova Pro or its trial is active for this room, the time of the last system alert, and the nursery phone’s own push token (so the server can wake it when a parent wants to listen). <strong>No sound, no video, no transcript</strong> of any kind is ever sent — the cry detector runs on the nursery phone and only its verdict travels.</li>
-      <li><strong>A signing key:</strong> the nursery phone generates a random 128-bit room key and hands it to the parent phone at pairing, encrypted (see Security). <strong>That room key never leaves your phones.</strong> What the server receives is a separate key derived from it one way (an HMAC), which is enough to check that messages really come from your phones and useless for anything else: it cannot be turned back into the room key, so the keys that encrypt the relayed sound and video cannot be computed from it. The server identifies your room by a hash of the signing key; neither key is your name, your Wi-Fi name or any identifier of you.</li>
-      <li><strong>Listening and watching away from home (Sova Pro):</strong> when you turn on <em>Listen</em> or <em>Watch</em> while your phone is not on the nursery’s Wi-Fi, the nursery phone sends compressed audio (and video, if you asked for it) to the parent phone <em>through</em> our server, and your voice travels the same way back when you hold <em>Talk</em>. The server passes the bytes on and keeps nothing: each message is held in memory only for the moment of forwarding, never written to disk, and the stream stops the instant you close the screen or switch listening off. The bytes are encrypted end to end between your two phones with keys derived from the room key (AES-256-GCM, a fresh key per session). The server never receives the room key — only the one-way signing key described above — so it cannot derive those keys and cannot read what it forwards, and neither can anyone who obtains our server or its traffic. Nothing is recorded.</li>
-      <li><strong>From the parent phone:</strong> a push-notification token issued by Google (Firebase Cloud Messaging). It is a device identifier that lets the server ask Google to wake your phone; it is the only way an Android phone can be reached with a notification while the app is not running.</li>
-    </ul>
-    <p>The server keeps, per room: the signing key, the push tokens of registered parent phones and of the nursery phone, the time and content of the last heartbeat (battery, temperature, crying state, Pro or trial state), whether the nursery reported itself switched off, and the timing it needs to tell whether the nursery is still alive. Events are forwarded immediately and not stored; relayed sound and video are not stored at all. If the server does not hear from a nursery phone for about twelve minutes (about two and a half minutes while a parent is away from home) it sends a “nursery offline” notification to the parent phones. A room whose nursery phone has been silent for thirty days is deleted automatically. The server is hosted on Cloudflare Workers; notifications are delivered through Google’s Firebase Cloud Messaging. Both act as our service providers and receive only what is described here. All traffic uses TLS and every message is signed with the signing key.</p>
-    <p>Switching the feature off on the nursery phone stops all messages immediately. “Forget nursery” on a parent phone removes its push token from the room. Generating a new pairing code on the nursery phone creates a new room key, which makes the old room unreachable.</p>
-
-    <h2>Network use</h2>
-    <p>The two phones talk to each other directly over the Wi-Fi network they share. The app uses local network discovery (mDNS and a UDP beacon) so the parent phone can find the nursery phone, and a direct, encrypted TCP connection between the two phones for audio, video, status and commands. Without that shared network, sound and video work only away from home with Sova Pro, through our relay. The only internet traffic is the alert and relay traffic described above, plus Google Play for purchases.</p>
-
-    <h2>Permissions and why they are needed</h2>
+    <h2>Permissions</h2>
+    <p>Android shows you the full list before you grant anything. The ones worth explaining:</p>
     <dl class="perms">
-      <div class="perm"><dt>Microphone</dt><dd>Listening in the nursery; talking back from the parent phone.</dd></div>
-      <div class="perm"><dt>Camera</dt><dd>Optional live video from the nursery while a parent is watching.</dd></div>
-      <div class="perm"><dt>Notifications</dt><dd>The persistent “monitoring” notification and the alarm (crying, lost connection, overheating nursery phone).</dd></div>
-      <div class="perm"><dt>Full-screen notifications</dt><dd>Showing the alarm on the lock screen so it can be silenced or stopped without unlocking the phone.</dd></div>
-      <div class="perm"><dt>Exact alarms</dt><dd>A watchdog timer that restarts the monitor if the system stops it at night.</dd></div>
-      <div class="perm"><dt>Run at startup</dt><dd>Bringing the monitor back after the phone restarts (for example after a system update), if it was running before.</dd></div>
-      <div class="perm"><dt>Ignore battery optimisations (request)</dt><dd>Asking you to exempt the app from battery optimisation so the monitor is not put to sleep. The system shows the request; you decide.</dd></div>
-      <div class="perm"><dt>Do Not Disturb access</dt><dd>Optional: letting the nursery phone silence its own notifications so they do not wake the baby. Only if you turn it on.</dd></div>
-      <div class="perm"><dt>Wi-Fi state, multicast, network state, internet</dt><dd>Finding and talking to the other phone on your local network; with “Alerts over the internet” on, sending events to the alert server and receiving push notifications.</dd></div>
-      <div class="perm"><dt>Foreground service, wake lock, vibrate</dt><dd>Keeping the monitor running with the screen off and making the alarm felt.</dd></div>
+      <div class="perm"><dt>Microphone, camera</dt><dd>Listening in the nursery, talking back, and live video while you watch.</dd></div>
+      <div class="perm"><dt>Notifications</dt><dd>The alarm, and the quiet notice that tells you monitoring is running.</dd></div>
+      <div class="perm"><dt>Full-screen notifications</dt><dd>Showing the alarm on the lock screen, so you can silence it without unlocking the phone.</dd></div>
+      <div class="perm"><dt>Alarms, start at boot, battery</dt><dd>Bringing the monitor back if the system stops it in the night or the phone restarts.</dd></div>
+      <div class="perm"><dt>Local network, internet</dt><dd>Finding the other phone on your Wi-Fi, and sending alerts when you are away.</dd></div>
+      <div class="perm"><dt>Do Not Disturb (optional)</dt><dd>Letting the nursery phone silence itself so it does not wake the baby. Only if you turn it on.</dd></div>
     </dl>
 
     <h2>Children</h2>
-    <p>The app is intended for parents and caregivers. The sound it processes may include a child’s voice, but it is analysed only on your own devices and is never recorded. With alerts over the internet on, what leaves your home is the detector’s verdict (“crying detected”), never the sound itself; with Sova Pro, while you listen or watch away from home, the sound and video pass through our server encrypted with a key we do not have, and are forwarded without being stored. We do not collect personal information from anyone, including children.</p>
-
-    <h2>Third parties</h2>
-    <p>The app includes no third-party advertising, analytics, tracking or crash-reporting components. The on-device sound-classification library (LiteRT) runs locally and does not communicate over the network. For the optional alerts over the internet we use two service providers: Cloudflare (hosting of the alert server) and Google Firebase Cloud Messaging (delivery of push notifications; the Firebase library in the app is used for this purpose only and its analytics are disabled). The app is distributed through Google Play; Google’s own data practices for app distribution are described in Google’s privacy policy.</p>
+    <p>The app is for parents and carers. The sound it listens to will include a child's voice, but that sound is examined on your own phone and never recorded. When you are away from home, what reaches us is the verdict, "crying", and never the sound itself; with Sova Pro the sound passes through us encrypted with a key we do not have. We collect no personal information about anyone, children included.</p>
 
     <h2>Purchases</h2>
-    <p>Live video, and listening and watching away from home, are an optional one-time purchase (“Sova Pro”) made through Google Play. The payment is handled entirely by Google; we never see your payment details. The app only stores on the phone the fact that the purchase was made, so the feature stays unlocked. A nursery phone remembers that a parent phone with Sova Pro has connected to it, so the whole family can use these features after one purchase. Before buying you can try them for twenty minutes; the nursery phone counts that time and the parent phone shows how much is left. Whether Pro or the trial is active for a room is included in the nursery’s heartbeat to our server, so the server knows whether to relay; no purchase information leaves your devices other than that flag and Google Play itself.</p>
+    <p>Live video, and listening and watching while away from home, are a one-time purchase called Sova Pro, made through Google Play. Google handles the payment; we never see your payment details. The phone remembers that the purchase was made, and the nursery remembers that a parent with Sova Pro has connected to it, so one purchase covers the whole family. You can try these features for twenty minutes before buying.</p>
 
     <h2>Security</h2>
-    <p>A parent phone joins a nursery phone by scanning the code on its screen or by typing its four-digit PIN. The PIN itself is never sent over the network: pairing uses a password-authenticated key exchange (SRP-6a), so a device on your Wi-Fi that watches the exchange learns nothing, and guessing requires a separate attempt per guess, which the nursery phone limits (five wrong PINs lock pairing for a minute; twenty replace the PIN). After pairing, every connection between the two phones is authenticated with the room key and encrypted end to end (ephemeral ECDH P-256, AES-256-GCM), so sound, video and commands cannot be read or injected by other devices on the same network. The room key itself never leaves your phones: alert traffic to our server is encrypted (TLS) and signed with a key derived from it one way (HMAC-SHA-256), and the relayed stream is encrypted with keys derived from the room key itself, which the server cannot compute. Giving the room a new code on the nursery phone replaces both the PIN and the room key and disconnects every paired phone.</p>
+    <p>A parent phone joins the nursery by scanning the code on its screen or typing its four-digit PIN. <strong>The PIN itself is never sent over the network</strong>, and the nursery blocks a device that keeps guessing. Everything the two phones say to each other afterwards is encrypted, so neither your neighbours nor we can read it. Giving the room a new code on the nursery phone disconnects every paired phone and makes the old one unreachable.</p>
+    <p>If you want to know exactly how that is done, down to the names of the algorithms, it is all written out in <a href="security/">How Sova is secured</a>.</p>
 
     <h2>Your choices</h2>
     <ul>
-      <li>Stop monitoring at any time from the app or from the notification; this releases the microphone and camera.</li>
-      <li>Revoke any permission in Android settings; the related feature stops working, the rest of the app continues.</li>
-      <li>Switch “Alerts over the internet” off on the nursery phone and nothing ever leaves your home; the messages stop immediately, and listening and watching away from home stop working.</li>
-      <li>Close the listening or video screen, or switch listening off, and the relay stops at once; nothing of it remains anywhere.</li>
-      <li>“Forget nursery” on a parent phone removes that phone from the room on our server. A room is deleted automatically after thirty days without contact.</li>
-      <li>Uninstalling the app removes all its data from the phone.</li>
+      <li>Stop monitoring at any time, from the app or from its notification. The microphone and camera are released at once.</li>
+      <li>Switch alerts over the internet off on the nursery phone, and nothing ever leaves your home again.</li>
+      <li>Close the listening or video screen, and the stream through our server stops at once. Nothing of it remains anywhere.</li>
+      <li>Use "Forget nursery" on a parent phone to take that phone out of the pair and off our server.</li>
+      <li>Uninstall the app, and everything it kept on the phone goes with it.</li>
     </ul>
 
     <h2>Changes to this policy</h2>
-    <p>If the app ever starts handling data differently, this page will be updated and the effective date changed. The current version is always available at this address.</p>
+    <p>If the app ever starts handling data differently, this page is updated and the date at the top changes with it. The current version is always at this address.</p>
 
     <h2>Contact</h2>
     <p><a href="mailto:contact@forgelabs.systems">contact@forgelabs.systems</a></p>
