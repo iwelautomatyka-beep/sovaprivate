@@ -232,9 +232,9 @@
     <p class="note">This page is the detail behind one sentence in the <a href="../">privacy policy</a>: that we cannot hear or see what passes through our server. It is written for people who want to check that claim rather than take it. Nothing here is a promise about what we collect; that is the policy's job.</p>
 
     <h2>Pairing, without ever sending the PIN</h2>
-    <p>The nursery phone shows a four-digit PIN and a QR code. A parent phone joins by scanning the code, or by typing the PIN.</p>
-    <p>Typing the PIN runs a password-authenticated key exchange (SRP-6a, RFC 5054, 2048-bit group, SHA-256). The PIN never travels, in any form: a device listening on your Wi-Fi learns nothing it could guess from later, and each guess costs the attacker one whole attempt against the nursery. The nursery counts those attempts. Five wrong PINs from one address lock pairing for a minute; keep going and the PIN is thrown away and replaced, which ends the attack for good.</p>
-    <p>What the parent receives at the end of a successful pairing is the <strong>room key</strong>: 128 random bits generated on the nursery, handed over inside the encrypted exchange. Everything below is built on it.</p>
+    <p>The nursery phone shows a four-digit PIN and a QR code. A parent phone joins by scanning the code, or by typing the PIN. The QR code carries only the PIN and a short tag that names the nursery; it does not carry the room key. Scanning and typing then take exactly the same road.</p>
+    <p>Pairing works only on the home Wi-Fi, and only while the nursery phone is showing its code; with the code card closed, or the nursery screen asleep for the night, it refuses every pairing attempt. Every attempt runs a password-authenticated key exchange (SRP-6a, RFC 5054, 2048-bit group, SHA-256). The PIN never travels, in any form: a device listening on your Wi-Fi learns nothing it could guess from later, and each guess costs the attacker one whole attempt against the nursery. The nursery counts those attempts, started ones included. Five wrong PINs from one address lock pairing for a minute; keep going and the PIN is thrown away and replaced, which ends the attack for good.</p>
+    <p>A correct PIN is still not enough. The nursery phone shows who is asking and waits for the person holding it to tap <em>Let in</em>; nothing is handed over before that, and no answer within a minute is a refusal. Only then does the parent receive the <strong>room key</strong>: 128 random bits generated on the nursery, handed over inside the encrypted exchange. Everything below is built on it.</p>
 
     <h2>Two keys, on purpose</h2>
     <p>The room key stays on your phones. Our server never receives it. What it receives, when the nursery registers, is a <strong>signing key</strong>:</p>
@@ -257,7 +257,7 @@
     <p>An honest list is worth more than a long one.</p>
     <ul>
       <li><strong>Someone holding an unlocked phone.</strong> Either phone in the pair can see and hear the nursery. The app's security begins where the phone's own lock ends.</li>
-      <li><strong>Someone who can read the nursery's screen.</strong> The PIN and QR code are on it, on purpose, because that is what makes pairing a ten-second job. Anyone standing in the room can pair a phone. Give the room a new code afterwards, and the one they paired is out.</li>
+      <li><strong>Someone who can read the nursery's screen and reach the nursery phone.</strong> The PIN and QR code are on it, on purpose, because that is what makes pairing a ten-second job. A photo of the screen alone is not enough to pair: the pairing has to happen on your Wi-Fi, and the nursery phone asks whoever is holding it before it lets a new phone in. Someone who can do both can pair a phone. Give the room a new code afterwards, and the one they paired is out.</li>
       <li><strong>Us, if you stop trusting the app itself.</strong> Everything above is done by code we wrote and ship. It means that our server cannot read your stream, which is a real and checkable property. It does not mean that an app can prove its own good behaviour; no app can.</li>
       <li><strong>Traffic analysis.</strong> We can see that a room is active, and how much data moves through it. We cannot see what is in it.</li>
     </ul>

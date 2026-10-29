@@ -212,7 +212,7 @@
     <p class="eyebrow">Baby monitor</p>
 
     <h2 class="doc-title" style="border:0;padding:0;">Privacy Policy</h2>
-    <p class="stamp">Effective 16 October 2026 · Android app <code>com.iwelautomatyka.sova</code></p>
+    <p class="stamp">Effective 29 October 2026 · Android app <code>com.iwelautomatyka.sova</code></p>
   </header>
 
   <div class="pillars">
@@ -252,7 +252,7 @@
     <p>All of this is switched on by default and can be switched off on the nursery phone. With it off, the app never contacts a server of ours at all; listening and watching from outside stop working too.</p>
 
     <h2>What we keep, and for how long</h2>
-    <p>For each pair of phones our server keeps the key that checks your signatures, the notification addresses of your phones, and the last thing the nursery reported: battery, temperature and whether crying is in progress. Alerts are passed on and not stored. Sound and video are never stored, anywhere. When the nursery phone goes quiet for several minutes, we tell your phone that it is offline. When it has been quiet for about a month, everything we hold for those phones is deleted by itself.</p>
+    <p>For each pair of phones our server keeps the key that checks your signatures, the notification addresses of your phones, and the last thing the nursery reported: battery, temperature and whether crying is in progress. Alerts are passed on and not stored. Sound and video are never stored, anywhere. When the nursery phone goes quiet for several minutes, we tell your phone that it is offline. When it has been quiet for about a month, everything we hold for those phones is deleted by itself. When you give the nursery a new code, everything we held for the old pair is deleted at once, before the new code even starts working.</p>
     <p>Our server's own diagnostic logs are kept deliberately blind: they record the room's random name, the server's own decisions and timings, and nothing from your home. Not the battery level, not the temperature, and not whether the baby was crying.</p>
     <p>We have no user accounts and no list of our users. The server runs on Cloudflare and notifications are delivered by Google; both handle only what is described here. There is no advertising, no analytics and no tracking in the app, and we do not sell anything to anyone.</p>
 
@@ -284,7 +284,7 @@
     <p>Live video, and listening and watching while away from home, are a one-time purchase called Sova Pro, made through Google Play. Google handles the payment; we never see your payment details. The phone remembers that the purchase was made, and the nursery remembers that a parent with Sova Pro has connected to it, so one purchase covers the whole family. You can try these features for twenty minutes before buying. The nursery phone counts those minutes and only while something is actually playing; if you ask for them while away from home, the request travels to it through our server like everything else described above.</p>
 
     <h2>Security</h2>
-    <p>A parent phone joins the nursery by scanning the code on its screen or typing its four-digit PIN. <strong>The PIN itself is never sent over the network</strong>, and the nursery blocks a device that keeps guessing. Everything the two phones say to each other afterwards is encrypted, so neither your neighbours nor we can read it. Giving the room a new code on the nursery phone disconnects every paired phone and makes the old one unreachable.</p>
+    <p>A parent phone joins the nursery by scanning the code on its screen or typing its four-digit PIN, and only while both phones are on your home Wi-Fi and the nursery phone is showing its code. The code on the screen carries nothing but that PIN: a photo of it does not open anything from outside your home. <strong>The PIN itself is never sent over the network</strong>, the nursery blocks a device that keeps guessing, and before any new phone is let in, the nursery phone asks whoever is holding it to allow it. Everything the two phones say to each other afterwards is encrypted, so neither your neighbours nor we can read it. Giving the room a new code on the nursery phone disconnects every paired phone, makes the old one unreachable, and erases what we held for it.</p>
     <p>If you want to know exactly how that is done, down to the names of the algorithms, it is all written out in <a href="security/">How Sova is secured</a>.</p>
 
     <h2>Your choices</h2>
@@ -293,6 +293,7 @@
       <li>Switch alerts over the internet off on the nursery phone, and nothing ever leaves your home again.</li>
       <li>Close the listening or video screen, and the stream through our server stops at once; the connection itself closes a few seconds later. Nothing of it remains anywhere.</li>
       <li>Use "Forget nursery" on a parent phone to take that phone out of the pair and off our server.</li>
+      <li>Give the nursery a new code, and every paired phone is out and everything we held for the old pair is erased at once.</li>
       <li>Uninstall the app, and everything it kept on the phone goes with it.</li>
     </ul>
 
