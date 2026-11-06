@@ -225,7 +225,7 @@
 
   <div class="lead">
     <h2>In one paragraph</h2>
-    <p>Your two phones share a secret that no server of ours ever receives. Pairing hands it over without the PIN ever crossing the network. At home, the phones talk directly, encrypted end to end. Away from home, their sound and video pass through our server, encrypted with keys worked out from that secret, which is why we can forward them and cannot read them.</p>
+    <p>Your phones share a secret that no server of ours ever receives, and each parent phone also holds a key of its own. Pairing hands them over without the PIN ever crossing the network. At home, the phones talk directly, encrypted end to end. Away from home, their alerts, sound and video pass through our server, encrypted with keys worked out from that secret, which is why we can forward them and cannot read them. Because every parent phone signs with its own key, the nursery can disconnect one phone without touching the others.</p>
   </div>
 
   <main>
@@ -234,24 +234,33 @@
     <h2>Pairing, without ever sending the PIN</h2>
     <p>The nursery phone shows a four-digit PIN and a QR code. A parent phone joins by scanning the code, or by typing the PIN. The QR code carries only the PIN and a short tag that names the nursery; it does not carry the room key. Scanning and typing then take exactly the same road.</p>
     <p>Pairing works only on the home Wi-Fi, and only while the nursery phone is showing its code; with the code card closed, or the nursery screen asleep for the night, it refuses every pairing attempt. Every attempt runs a password-authenticated key exchange (SRP-6a, RFC 5054, 2048-bit group, SHA-256). The PIN never travels, in any form: a device listening on your Wi-Fi learns nothing it could guess from later, and each guess costs the attacker one whole attempt against the nursery. The nursery counts those attempts, started ones included. Five wrong PINs from one address lock pairing for a minute; keep going and the PIN is thrown away and replaced, which ends the attack for good.</p>
-    <p>A correct PIN is still not enough. The nursery phone shows who is asking and waits for the person holding it to tap <em>Let in</em>; nothing is handed over before that, and no answer within a minute is a refusal. Only then does the parent receive the <strong>room key</strong>: 128 random bits generated on the nursery, handed over inside the encrypted exchange. Everything below is built on it.</p>
+    <p>A correct PIN is still not enough. The nursery phone shows who is asking and waits for the person holding it to tap <em>Let in</em>; nothing is handed over before that, and no answer within a minute is a refusal. Only then does the parent receive the <strong>room key</strong>: 128 random bits generated on the nursery, handed over inside the encrypted exchange. On its first connection after that, inside the encrypted session, the nursery also gives that phone its own <strong>parent key</strong>, another 128 random bits that only the nursery and that one phone know. Everything below is built on these two.</p>
+    <p>A nursery without Sova Pro accepts one parent phone. The check happens after the PIN has been proven and before anyone is asked to let the phone in.</p>
 
-    <h2>Two keys, on purpose</h2>
-    <p>The room key stays on your phones. Our server never receives it. What it receives, when the nursery registers, is a <strong>signing key</strong>:</p>
-    <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">signing key = HMAC-SHA-256(room key, "sova-alert-auth")</p>
-    <p>HMAC runs one way. The signing key is enough for the server to verify that a heartbeat, an event or a socket really comes from your phones, and it cannot be turned back into the room key. Since every key that encrypts sound and video is derived from the room key, the server cannot compute any of them.</p>
+    <h2>Signing keys, one way</h2>
+    <p>The room key and the parent keys stay on your phones. Our server never receives them. What it receives are <strong>signing keys</strong>, one for the nursery and one for each parent phone, sent by the nursery itself:</p>
+    <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">nursery signing key = HMAC-SHA-256(room key, "sova-alert-auth")<br>parent signing key&nbsp; = HMAC-SHA-256(parent key, "sova-alert-auth")</p>
+    <p>HMAC runs one way. A signing key is enough for the server to verify that a heartbeat, an event, a status request or a socket really comes from one of your phones, and it cannot be turned back into the key it came from. Since every key that encrypts alerts, sound and video is derived from the room key, the server cannot compute any of them.</p>
+    <p><strong>Disconnecting one phone.</strong> The nursery keeps the list of parent signing keys on our server. Remove a phone on the nursery, and its key leaves the list: from then on the server refuses that phone's requests and sockets, drops its notification address, and closes its open connections, while the other parent phones go on as before. Once every parent phone in a room has its own key, the nursery switches the room to <em>parent keys only</em>: the room key alone, including a copy kept on an old phone, then opens nothing on our server or on your Wi-Fi.</p>
     <p>Your room is named by the hash of the signing key, so that registering a key under someone else's room name is rejected. The name identifies nothing about you: not your phone, not your network, not you.</p>
 
     <h2>At home: the two phones talk directly</h2>
-    <p>The parent phone finds the nursery over mDNS and a UDP beacon, then opens a direct TCP connection. The broadcast carries a tag derived from the room key, never the PIN, so a listener cannot tell which room is which.</p>
-    <p>Each connection starts with an ephemeral ECDH key agreement on P-256, authenticated by HMAC tags computed from the room key, with separate labels for the two ends. Both sides then derive separate keys per direction with HKDF, and every frame after that, sound, video, status and commands alike, is sealed with AES-256-GCM under a counter nonce. A device on your Wi-Fi can see that two phones are talking and nothing more. It cannot read a frame, replay one, or inject one.</p>
+    <p>The parent phone finds the nursery over mDNS and a UDP beacon, then opens a direct TCP connection. The broadcast carries a tag that changes every hour, never the PIN and never the nursery's name, so a listener on the same network cannot tell which room is which, nor link one hour to the next. The name, and a fixed tag that the QR code points to, appear only while the pairing card is open on the nursery.</p>
+    <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">tag = HMAC-SHA-256(room key, "sova-rr|" + hour)</p>
+    <p>Each connection starts with an ephemeral ECDH key agreement on P-256, authenticated by HMAC tags computed from that phone's own parent key (from the room key for a phone that has none yet), with separate labels for the two ends. Both sides then derive separate keys per direction with HKDF, and every frame after that, sound, video, status and commands alike, is sealed with AES-256-GCM under a counter nonce. A device on your Wi-Fi can see that two phones are talking and nothing more. It cannot read a frame, replay one, or inject one.</p>
 
     <h2>Away from home: through us, but closed to us</h2>
-    <p>When your phone is not on the nursery's Wi-Fi, both phones open a WebSocket to our server, each request signed with the signing key. The server's whole job is to copy bytes from one socket to the others in the same room. It holds each message in memory for the instant that takes and writes none of them anywhere.</p>
+    <p>When your phone is not on the nursery's Wi-Fi, both phones open a WebSocket to our server, each request signed with that phone's own signing key. The server's whole job is to copy bytes from one socket to the others in the same room. It holds each message in memory for the instant that takes and writes none of them anywhere.</p>
     <p>Every relayed message carries its own header: a 16-byte sender nonce, an 8-byte counter, then the ciphertext. The key is derived per sender and per direction:</p>
     <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">key = HKDF(room key, nonce, "sova-relay-n2c")&nbsp;&nbsp;nursery to parent<br>key = HKDF(room key, nonce, "sova-relay-c2n")&nbsp;&nbsp;your voice back</p>
     <p>AES-256-GCM again, a fresh key per session, and the receiver derives it from the header of the message in front of it, so two nursery sockets overlapping for a moment cannot confuse one another. The server has no room key, so it has no key here at all. Audio is AAC-LC at 32 kbit/s, video is H.264; both are encrypted before they reach the socket and decrypted only on your phone.</p>
     <p>Alert traffic uses TLS on top of all this, and every request carries a timestamp inside the signature, so a captured request cannot be replayed later.</p>
+
+    <h2>Alerts: sealed for your phones</h2>
+    <p>What the nursery reports, whether it is crying, overheating, the end of crying, or its battery, temperature, signal and the crying of the last four hours, is sealed on the nursery before it leaves:</p>
+    <p class="note" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;">key = HKDF(room key, "sova-state-v1")<br>AES-256-GCM, 12-byte random nonce, associated data = room name | "hb" or "ev"</p>
+    <p>The server stores the sealed status as it is and passes sealed events on to Google, who deliver them to your phones. Neither can read them. What they do see is that the nursery checked in or sent something, and when: without that the server could not wake you when the nursery goes silent, and the notification could not be delivered. A sealed event also carries the nursery's own time inside, and your phone throws away one that is far from the time it was delivered, so an old event cannot be replayed as a new one.</p>
+    <p>For as long as some parent phone in a room still runs an older version of the app, the server tells the nursery so, and the nursery adds a readable copy for that phone only. When the last old phone is updated or removed, the readable copies stop.</p>
 
     <h2>What this does not protect you from</h2>
     <p>An honest list is worth more than a long one.</p>
@@ -259,7 +268,7 @@
       <li><strong>Someone holding an unlocked phone.</strong> Either phone in the pair can see and hear the nursery. The app's security begins where the phone's own lock ends.</li>
       <li><strong>Someone who can read the nursery's screen and reach the nursery phone.</strong> The PIN and QR code are on it, on purpose, because that is what makes pairing a ten-second job. A photo of the screen alone is not enough to pair: the pairing has to happen on your Wi-Fi, and the nursery phone asks whoever is holding it before it lets a new phone in. Someone who can do both can pair a phone. Give the room a new code afterwards, and the one they paired is out.</li>
       <li><strong>Us, if you stop trusting the app itself.</strong> Everything above is done by code we wrote and ship. It means that our server cannot read your stream, which is a real and checkable property. It does not mean that an app can prove its own good behaviour; no app can.</li>
-      <li><strong>Traffic analysis.</strong> We can see that a room is active, and how much data moves through it. We cannot see what is in it.</li>
+      <li><strong>Traffic analysis.</strong> We can see that a room is active, when the nursery sends an event, and how much data moves through it. We cannot see what is in it.</li>
     </ul>
 
     <h2>Found a problem?</h2>
